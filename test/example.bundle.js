@@ -46,21 +46,21 @@
 
 	var InheritanceCreator = __webpack_require__(1);
 	
-	var B2 = __webpack_require__(15);
-	var B = __webpack_require__(2);
-	var A = __webpack_require__(3);
-	var D4 = __webpack_require__(9);
-	var D = __webpack_require__(4);
-	var C = __webpack_require__(5);
-	var C2 = __webpack_require__(6);
-	var D2 = __webpack_require__(7);
-	var D3 = __webpack_require__(8);
-	var Foreign1C = __webpack_require__(11);
-	var Foreign2C = __webpack_require__(12);
-	var ForeignD = __webpack_require__(10);
-	var A2 = __webpack_require__(16);
-	var C3 = __webpack_require__(14);
-	var D5 = __webpack_require__(13);
+	var B2 = __webpack_require__(3);
+	var B = __webpack_require__(7);
+	var A = __webpack_require__(8);
+	var D4 = __webpack_require__(11);
+	var D = __webpack_require__(9);
+	var C = __webpack_require__(10);
+	var C2 = __webpack_require__(12);
+	var D2 = __webpack_require__(13);
+	var D3 = __webpack_require__(14);
+	var Foreign1C = __webpack_require__(15);
+	var Foreign2C = __webpack_require__(16);
+	var ForeignD = __webpack_require__(17);
+	var A2 = __webpack_require__(4);
+	var C3 = __webpack_require__(6);
+	var D5 = __webpack_require__(5);
 	
 	InheritanceCreator.checkInheritanceCompleteness();
 	
@@ -106,8 +106,10 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(module) {module.name = 'InheritanceCreator';
+	
 	var inheritanceWaitingMap = {};
 	
 	/**
@@ -147,16 +149,34 @@
 	    }
 	};
 	
+	// -------- Private functions --------
+	
 	/**
 	 * @param {Function} Child
 	 * @param {Function} Parent
 	 */
 	function internalInheritsFrom(Child, Parent) {
-	    Child.prototype = Object.create(Parent.prototype);
-	    Child.prototype.constructor = Child;
+	    var newChildPrototype = Object.create(Parent.prototype);
+	    copyOwnProperties(Child.prototype, newChildPrototype);
+	    Object.defineProperty(newChildPrototype, 'constructor', { value: Child, enumerable: false });
+	    Child.prototype = newChildPrototype;
 	    Child.parentClass = Parent.prototype;
 	    Child.parentClassName = getClassName(Parent);
 	    delete Child.__notInherited;
+	}
+	
+	/**
+	 *
+	 * @param {Object} fromObject
+	 * @param {Object} toObject
+	 */
+	function copyOwnProperties(fromObject, toObject) {
+	    var keysToBeCopied = Object.keys(fromObject);
+	
+	    for (var keyIndex = 0; keyIndex < keysToBeCopied.length; keyIndex++) {
+	        var key = keysToBeCopied[keyIndex];
+	        toObject[key] = fromObject[key];
+	    }
 	}
 	
 	/**
@@ -234,231 +254,29 @@
 	 * @return {string}
 	 */
 	function getClassName(Ctor) {
-	    return Ctor.name || Ctor.className;
+	    return Ctor.className || Ctor.name;
 	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var B = function () {
-	    this.b = 'b-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(B);
-	
-	module.exports = B;
-	
-	var A = __webpack_require__(3);
-	InheritanceCreator.inheritsFrom(B, A);
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
 
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var A = function () {
-	    this.a = 'a-value';
-	};
-	
-	module.exports = A;
-	
-	var D = __webpack_require__(4);
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var D = function () {
-	    this.d = 'd-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(D);
-	
-	module.exports = D;
-	
-	var C = __webpack_require__(5);
-	InheritanceCreator.inheritsFrom(D, C);
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var C = function () {
-	    this.c = 'c-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(C);
-	
-	module.exports = C;
-	
-	var B = __webpack_require__(2);
-	InheritanceCreator.inheritsFrom(C, B);
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var C2 = function () {
-	    this.c2 = 'c2-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(C2);
-	
-	module.exports = C2;
-	
-	var B = __webpack_require__(2);
-	InheritanceCreator.inheritsFrom(C2, B);
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var D2 = function () {
-	    this.d2 = 'd2-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(D2);
-	
-	module.exports = D2;
-	
-	var C = __webpack_require__(5);
-	InheritanceCreator.inheritsFrom(D2, C);
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var D3 = function () {
-	    this.d3 = 'd3-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(D3);
-	
-	module.exports = D3;
-	
-	var C2 = __webpack_require__(6);
-	InheritanceCreator.inheritsFrom(D3, C2);
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var D4 = function () {
-	    this.d4 = 'd4-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(D4);
-	
-	module.exports = D4;
-	
-	var C2 = __webpack_require__(6);
-	InheritanceCreator.inheritsFrom(D4, C2);
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var D = function () {
-	    this.d = 'd-foreign1-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(D);
-	
-	module.exports = D;
-	
-	var C = __webpack_require__(11);
-	InheritanceCreator.inheritsFrom(D, C);
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var C = function () {
-	    this.c = 'c-foreign1-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(C);
-	
-	module.exports = C;
-	
-	var B = __webpack_require__(2);
-	InheritanceCreator.inheritsFrom(C, B);
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var C = function () {
-	    this.c = 'c-foreign2-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(C);
-	
-	module.exports = C;
-	
-	var B = __webpack_require__(2);
-	InheritanceCreator.inheritsFrom(C, B);
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var D5 = function () {
-	    this.d5 = 'd5-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(D5);
-	
-	module.exports = D5;
-	
-	var C3 = __webpack_require__(14);
-	InheritanceCreator.inheritsFrom(D5, C3);
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var InheritanceCreator = __webpack_require__(1);
-	
-	var C3 = function () {
-	    this.c3 = 'c3-value';
-	};
-	
-	InheritanceCreator.prepareToInherits(C3);
-	
-	module.exports = C3;
-	
-	var B2 = __webpack_require__(15);
-	InheritanceCreator.inheritsFrom(C3, B2);
-
-
-/***/ },
-/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var InheritanceCreator = __webpack_require__(1);
@@ -471,12 +289,12 @@
 	
 	module.exports = B2;
 	
-	var A2 = __webpack_require__(16);
+	var A2 = __webpack_require__(4);
 	InheritanceCreator.inheritsFrom(B2, A2);
 
 
 /***/ },
-/* 16 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var A2 = function () {
@@ -485,9 +303,229 @@
 	
 	module.exports = A2;
 	
-	var D5 = __webpack_require__(13);
-	var B = __webpack_require__(2);
+	var D5 = __webpack_require__(5);
+	var B = __webpack_require__(7);
 
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var D5 = function () {
+	    this.d5 = 'd5-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(D5);
+	
+	module.exports = D5;
+	
+	var C3 = __webpack_require__(6);
+	InheritanceCreator.inheritsFrom(D5, C3);
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var C3 = function () {
+	    this.c3 = 'c3-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(C3);
+	
+	module.exports = C3;
+	
+	var B2 = __webpack_require__(3);
+	InheritanceCreator.inheritsFrom(C3, B2);
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var B = function () {
+	    this.b = 'b-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(B);
+	
+	module.exports = B;
+	
+	var A = __webpack_require__(8);
+	InheritanceCreator.inheritsFrom(B, A);
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var A = function () {
+	    this.a = 'a-value';
+	};
+	
+	module.exports = A;
+	
+	var D = __webpack_require__(9);
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var D = function () {
+	    this.d = 'd-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(D);
+	
+	module.exports = D;
+	
+	var C = __webpack_require__(10);
+	InheritanceCreator.inheritsFrom(D, C);
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var C = function () {
+	    this.c = 'c-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(C);
+	
+	module.exports = C;
+	
+	var B = __webpack_require__(7);
+	InheritanceCreator.inheritsFrom(C, B);
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var D4 = function () {
+	    this.d4 = 'd4-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(D4);
+	
+	module.exports = D4;
+	
+	var C2 = __webpack_require__(12);
+	InheritanceCreator.inheritsFrom(D4, C2);
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var C2 = function () {
+	    this.c2 = 'c2-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(C2);
+	
+	module.exports = C2;
+	
+	var B = __webpack_require__(7);
+	InheritanceCreator.inheritsFrom(C2, B);
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var D2 = function () {
+	    this.d2 = 'd2-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(D2);
+	
+	module.exports = D2;
+	
+	var C = __webpack_require__(10);
+	InheritanceCreator.inheritsFrom(D2, C);
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var D3 = function () {
+	    this.d3 = 'd3-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(D3);
+	
+	module.exports = D3;
+	
+	var C2 = __webpack_require__(12);
+	InheritanceCreator.inheritsFrom(D3, C2);
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var C = function () {
+	    this.c = 'c-foreign1-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(C);
+	
+	module.exports = C;
+	
+	var B = __webpack_require__(7);
+	InheritanceCreator.inheritsFrom(C, B);
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var C = function () {
+	    this.c = 'c-foreign2-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(C);
+	
+	module.exports = C;
+	
+	var B = __webpack_require__(7);
+	InheritanceCreator.inheritsFrom(C, B);
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InheritanceCreator = __webpack_require__(1);
+	
+	var D = function () {
+	    this.d = 'd-foreign1-value';
+	};
+	
+	InheritanceCreator.prepareToInherits(D);
+	
+	module.exports = D;
+	
+	var C = __webpack_require__(15);
+	InheritanceCreator.inheritsFrom(D, C);
 
 /***/ }
 /******/ ]);

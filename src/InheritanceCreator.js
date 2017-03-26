@@ -1,3 +1,5 @@
+module.name = 'InheritanceCreator';
+
 var inheritanceWaitingMap = {};
 
 /**
@@ -37,16 +39,34 @@ exports.checkInheritanceCompleteness = function () {
     }
 };
 
+// -------- Private functions --------
+
 /**
  * @param {Function} Child
  * @param {Function} Parent
  */
 function internalInheritsFrom(Child, Parent) {
-    Child.prototype = Object.create(Parent.prototype);
-    Child.prototype.constructor = Child;
+    var newChildPrototype = Object.create(Parent.prototype);
+    copyOwnProperties(Child.prototype, newChildPrototype);
+    Object.defineProperty(newChildPrototype, 'constructor', { value: Child, enumerable: false });
+    Child.prototype = newChildPrototype;
     Child.parentClass = Parent.prototype;
     Child.parentClassName = getClassName(Parent);
     delete Child.__notInherited;
+}
+
+/**
+ *
+ * @param {Object} fromObject
+ * @param {Object} toObject
+ */
+function copyOwnProperties(fromObject, toObject) {
+    var keysToBeCopied = Object.keys(fromObject);
+
+    for (var keyIndex = 0; keyIndex < keysToBeCopied.length; keyIndex++) {
+        var key = keysToBeCopied[keyIndex];
+        toObject[key] = fromObject[key];
+    }
 }
 
 /**
@@ -124,5 +144,5 @@ function inheritsDescendantsFor(Parent) {
  * @return {string}
  */
 function getClassName(Ctor) {
-    return Ctor.name || Ctor.className;
+    return Ctor.className || Ctor.name;
 }

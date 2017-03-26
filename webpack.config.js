@@ -1,6 +1,5 @@
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
-console.log('---> From Webpack.config! <---');
 module.exports = {
     entry:   './test/example.js',
     output:  {
